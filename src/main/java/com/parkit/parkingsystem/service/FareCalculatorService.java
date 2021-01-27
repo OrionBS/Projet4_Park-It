@@ -12,25 +12,39 @@ public class FareCalculatorService {
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
 
-        long inHour = ticket.getInTime().getTime();
-        long outHour = ticket.getOutTime().getTime();
+        long inMilliseconds = ticket.getInTime().getTime();
+        long outMilliseconds = ticket.getOutTime().getTime();
 
-        long diffInMilliseconds = outHour - inHour;
+        long diffInMilliseconds = outMilliseconds - inMilliseconds;
 
-        float duration = TimeUnit.MINUTES.convert(diffInMilliseconds,TimeUnit.MILLISECONDS) / 60f;
+        float durationInMinutes = TimeUnit.MINUTES.convert(diffInMilliseconds,TimeUnit.MILLISECONDS) / 60f;
 
+        if (ticket.getRecurrentUser()) {
             switch (ticket.getParkingSpot().getParkingType()) {
                 case CAR: {
-                    ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                    ticket.setPrice(durationInMinutes * Fare.CAR_RATE_PER_HOUR * 0.95);
                     break;
                 }
                 case BIKE: {
-                    ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                    ticket.setPrice(durationInMinutes * Fare.BIKE_RATE_PER_HOUR * 0.95);
                     break;
                 }
                 default:
                     throw new IllegalArgumentException("Unkown Parking Type");
+            }
+        } else {
+            switch (ticket.getParkingSpot().getParkingType()) {
+                case CAR: {
+                    ticket.setPrice(durationInMinutes * Fare.CAR_RATE_PER_HOUR);
+                    break;
+                }
+                case BIKE: {
+                    ticket.setPrice(durationInMinutes * Fare.BIKE_RATE_PER_HOUR);
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Unkown Parking Type");
+            }
         }
-
     }
 }
