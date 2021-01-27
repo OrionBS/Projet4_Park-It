@@ -2,6 +2,7 @@ package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
+import com.parkit.parkingsystem.util.Under30Minutes;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,16 +20,25 @@ public class FareCalculatorService {
 
         float duration = TimeUnit.MINUTES.convert(diffInMilliseconds,TimeUnit.MILLISECONDS) / 60f;
 
-        switch (ticket.getParkingSpot().getParkingType()){
-            case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
-                break;
+        Under30Minutes under30Minutes = new Under30Minutes();
+        boolean isUnder30Minutes = under30Minutes.isUnder30Minutes(duration);
+
+        if (isUnder30Minutes) {
+            ticket.setPrice(0);
+        } else {
+            switch (ticket.getParkingSpot().getParkingType()) {
+                case CAR: {
+                    ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                    break;
+                }
+                case BIKE: {
+                    ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Unkown Parking Type");
             }
-            case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
-                break;
-            }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
         }
+
     }
 }
