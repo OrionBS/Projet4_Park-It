@@ -60,8 +60,8 @@ public class ParkingDataBaseIT {
     public void testProcessIncomingVehicleShouldSaveTicketAndUpdateAvailablity() {
         //GIVEN
         initData();
-        //WHEN
 
+        //WHEN
         parkingService.processIncomingVehicle();
         Ticket ticketIsSaved = ticketDAO.getTicket(vehicleRegNumber);
         int nextParkingSlot = parkingSpotDAO.getNextAvailableSlot(parkingType.CAR);
