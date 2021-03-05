@@ -137,6 +137,7 @@
                         <exclude>**/config/*.class</exclude>
                         <exclude>**/constants/*.class</exclude>
                         <exclude>**/util/*.class</exclude>
+                        <exclude>**/service/InteractiveShell.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>
