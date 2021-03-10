@@ -3,29 +3,55 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+import java.util.concurrent.TimeUnit;
+
 public class FareCalculatorService {
 
-    public void calculateFare(Ticket ticket){
-        if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
-            throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
+    public final static double REDUCTION = 0.05;
+
+    /**
+     * Used to calculate the fare when the user exiting the parking.
+     * If the user exiting before 30 minutes, it's free.
+     * If the user isRecurrentUser, 5% of reduction.
+     * @param ticket
+     * @param isRecurrentUser if true, 5% reduction
+     */
+    public void calculateFare(Ticket ticket, boolean isRecurrentUser) {
+        if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
+            throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
         }
 
-        int inHour = ticket.getInTime().getHours();
-        int outHour = ticket.getOutTime().getHours();
+        long inMilliseconds = ticket.getInTime().getTime();
+        long outMilliseconds = ticket.getOutTime().getTime();
 
-        //TODO: Some tests are failing here. Need to check if this logic is correct
-        int duration = outHour - inHour;
+        long diffInMilliseconds = outMilliseconds - inMilliseconds;
 
-        switch (ticket.getParkingSpot().getParkingType()){
+        float durationInHours = TimeUnit.MINUTES.convert(diffInMilliseconds, TimeUnit.MILLISECONDS) / 60f;
+        if (durationInHours <= 0.5f) {
+            ticket.setPrice(0);
+            return;
+        }
+        switch (ticket.getParkingSpot().getParkingType()) {
             case CAR: {
-                ticket.setPrice(duration * Fare.CAR_RATE_PER_HOUR);
+                final double discountResult = durationInHours * Fare.CAR_RATE_PER_HOUR * (isRecurrentUser ? (1 - REDUCTION) : 1);
+                ticket.setPrice(discountResult);
                 break;
             }
             case BIKE: {
-                ticket.setPrice(duration * Fare.BIKE_RATE_PER_HOUR);
+                final double discountResult = durationInHours * Fare.BIKE_RATE_PER_HOUR * (isRecurrentUser ? (1 - REDUCTION) : 1);
+                ticket.setPrice(discountResult);
                 break;
             }
-            default: throw new IllegalArgumentException("Unkown Parking Type");
+            default:
+                throw new IllegalArgumentException("Unkown Parking Type");
         }
+    }
+
+    /**
+     * Used to calculate without reduction.
+     * @param ticket
+     */
+    public void calculateFare(Ticket ticket) {
+        calculateFare(ticket, false);
     }
 }
