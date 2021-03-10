@@ -19,6 +19,11 @@ public class TicketDAO {
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
     private List<String> checkList = new ArrayList<>();
 
+    /**
+     * Used to save a new ticket for an incoming user in the database.
+     * @param ticket
+     * @return
+     */
     public boolean saveTicket(Ticket ticket) {
         Connection con = null;
         try {
@@ -40,6 +45,11 @@ public class TicketDAO {
         }
     }
 
+    /**
+     * Used to get the ticket in the database in terms of the vehicle registration number.
+     * @param vehicleRegNumber
+     * @return
+     */
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = null;
@@ -69,6 +79,11 @@ public class TicketDAO {
         }
     }
 
+    /**
+     * Used to update the ticket in the database when the user exiting the parking.
+     * @param ticket
+     * @return
+     */
     public boolean updateTicket(Ticket ticket) {
         Connection con = null;
         try {
@@ -87,6 +102,11 @@ public class TicketDAO {
         return false;
     }
 
+    /**
+     * Used to authorize or not 5% reduction in terms of the user's recurrence.
+     * @param ticket
+     * @return
+     */
     public boolean isRecurrentUser(Ticket ticket) {
         Connection con = null;
         try {

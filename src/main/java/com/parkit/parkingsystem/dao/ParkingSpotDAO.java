@@ -16,6 +16,11 @@ public class ParkingSpotDAO {
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
+    /**
+     * Used to get the next available slot for CAR or BIKE in the database.
+     * @param parkingType
+     * @return
+     */
     public int getNextAvailableSlot(ParkingType parkingType){
         Connection con = null;
         int result=-1;
@@ -37,6 +42,11 @@ public class ParkingSpotDAO {
         return result;
     }
 
+    /**
+     * Used to update the availability for parking slot in the database.
+     * @param parkingSpot
+     * @return
+     */
     public boolean updateParking(ParkingSpot parkingSpot){
         //update the availability fo that parking slot
         Connection con = null;

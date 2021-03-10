@@ -10,10 +10,11 @@ public class FareCalculatorService {
     public final static double REDUCTION = 0.05;
 
     /**
-     * Permet de calculer avec la réduction si le isCurrentUser est true
-     *
+     * Used to calculate the fare when the user exiting the parking.
+     * If the user exiting before 30 minutes, it's free.
+     * If the user isRecurrentUser, 5% of reduction.
      * @param ticket
-     * @param isRecurrentUser
+     * @param isRecurrentUser if true, 5% reduction
      */
     public void calculateFare(Ticket ticket, boolean isRecurrentUser) {
         if ((ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime()))) {
@@ -47,8 +48,7 @@ public class FareCalculatorService {
     }
 
     /**
-     * Permet de calculer sans réduction
-     *
+     * Used to calculate without reduction.
      * @param ticket
      */
     public void calculateFare(Ticket ticket) {

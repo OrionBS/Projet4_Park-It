@@ -27,6 +27,9 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }
 
+    /**
+     * Used to process an incoming vehicle and call all the DAO method.
+     */
     public void processIncomingVehicle() {
         try {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
@@ -54,11 +57,20 @@ public class ParkingService {
         }
     }
 
+    /**
+     * Used to get the vehicle registration number using inputReaderUtil.
+     * @return
+     * @throws Exception
+     */
     private String getVehichleRegNumber() throws Exception {
         System.out.println("Please type the vehicle registration number and press enter key");
         return inputReaderUtil.readVehicleRegistrationNumber();
     }
 
+    /**
+     * Used to get the next parking number if available for incoming vehicles.
+     * @return
+     */
     public ParkingSpot getNextParkingNumberIfAvailable() {
         int parkingNumber = 0;
         ParkingSpot parkingSpot = null;
@@ -78,6 +90,10 @@ public class ParkingService {
         return parkingSpot;
     }
 
+    /**
+     * Used to get the vehicle type, CAR or BIKE.
+     * @return
+     */
     private ParkingType getVehichleType() {
         System.out.println("Please select vehicle type from menu");
         System.out.println("1 CAR");
@@ -97,6 +113,9 @@ public class ParkingService {
         }
     }
 
+    /**
+     * Used to process an exiting vehicle and update database with exiting time and price.
+     */
     public void processExitingVehicle() {
         try {
             String vehicleRegNumber = getVehichleRegNumber();
