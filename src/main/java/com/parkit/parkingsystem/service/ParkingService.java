@@ -59,6 +59,7 @@ public class ParkingService {
 
     /**
      * Used to get the vehicle registration number using inputReaderUtil.
+     *
      * @return
      * @throws Exception
      */
@@ -69,6 +70,7 @@ public class ParkingService {
 
     /**
      * Used to get the next parking number if available for incoming vehicles.
+     *
      * @return
      */
     public ParkingSpot getNextParkingNumberIfAvailable() {
@@ -92,6 +94,7 @@ public class ParkingService {
 
     /**
      * Used to get the vehicle type, CAR or BIKE.
+     *
      * @return
      */
     private ParkingType getVehichleType() {

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Date;
@@ -72,7 +73,6 @@ public class ParkingDataBaseIT {
         assertEquals(2, nextParkingSlot);
         System.out.println("And the parking table is availability updated.");
 
-        //TODO: check that a ticket is actually saved in DB and Parking table is updated with availability ------> DONE
     }
 
     @Test
@@ -91,7 +91,6 @@ public class ParkingDataBaseIT {
         assertNotNull(dbTicketOutTime);
         System.out.println("The Out Time isn't null, so the fare is generated and the out time is correctly populated when the method is called..");
 
-        //TODO: check that the fare generated and out time are populated correctly in the database --->DONE
     }
 
     private void initData() {
