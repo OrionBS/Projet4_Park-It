@@ -2,6 +2,8 @@
 A command line app for managing the parking system. 
 This app uses Java to run and stores the data in Mysql DB.
 
+GitHub Link: https://github.com/OrionBS/Projet4_Park-It
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
