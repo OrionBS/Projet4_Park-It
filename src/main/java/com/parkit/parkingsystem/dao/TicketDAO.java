@@ -21,32 +21,32 @@ public class TicketDAO {
 
     /**
      * Used to save a new ticket for an incoming user in the database.
+     *
      * @param ticket
      * @return
      */
     public boolean saveTicket(Ticket ticket) {
-        Connection con = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET);
-            //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-            //ps.setInt(1,ticket.getId());
-            ps.setInt(1, ticket.getParkingSpot().getId());
-            ps.setString(2, ticket.getVehicleRegNumber());
-            ps.setDouble(3, ticket.getPrice());
-            ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
-            ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
-            return ps.execute();
+        try (Connection con = dataBaseConfig.getConnection()) {
+
+            try (PreparedStatement ps = con.prepareStatement(DBConstants.SAVE_TICKET)) {
+                //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+                ps.setInt(1, ticket.getParkingSpot().getId());
+                ps.setString(2, ticket.getVehicleRegNumber());
+                ps.setDouble(3, ticket.getPrice());
+                ps.setTimestamp(4, new Timestamp(ticket.getInTime().getTime()));
+                ps.setTimestamp(5, (ticket.getOutTime() == null) ? null : (new Timestamp(ticket.getOutTime().getTime())));
+                return ps.execute();
+            }
+
         } catch (Exception ex) {
             logger.error("Error fetching next available slot", ex);
-        } finally {
-            dataBaseConfig.closeConnection(con);
-            return false;
         }
+        return false;
     }
 
     /**
      * Used to get the ticket in the database in terms of the vehicle registration number.
+     *
      * @param vehicleRegNumber
      * @return
      */
@@ -81,29 +81,28 @@ public class TicketDAO {
 
     /**
      * Used to update the ticket in the database when the user exiting the parking.
+     *
      * @param ticket
      * @return
      */
     public boolean updateTicket(Ticket ticket) {
-        Connection con = null;
-        try {
-            con = dataBaseConfig.getConnection();
-            PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET);
-            ps.setDouble(1, ticket.getPrice());
-            ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
-            ps.setInt(3, ticket.getId());
-            ps.execute();
-            return true;
+        try (Connection con = dataBaseConfig.getConnection()) {
+            try (PreparedStatement ps = con.prepareStatement(DBConstants.UPDATE_TICKET)) {
+                ps.setDouble(1, ticket.getPrice());
+                ps.setTimestamp(2, new Timestamp(ticket.getOutTime().getTime()));
+                ps.setInt(3, ticket.getId());
+                ps.execute();
+                return true;
+            }
         } catch (Exception ex) {
             logger.error("Error saving ticket info", ex);
-        } finally {
-            dataBaseConfig.closeConnection(con);
         }
         return false;
     }
 
     /**
      * Used to authorize or not 5% reduction in terms of the user's recurrence.
+     *
      * @param ticket
      * @return
      */

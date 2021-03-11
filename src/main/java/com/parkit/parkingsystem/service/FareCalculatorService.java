@@ -13,6 +13,7 @@ public class FareCalculatorService {
      * Used to calculate the fare when the user exiting the parking.
      * If the user exiting before 30 minutes, it's free.
      * If the user isRecurrentUser, 5% of reduction.
+     *
      * @param ticket
      * @param isRecurrentUser if true, 5% reduction
      */
@@ -49,6 +50,7 @@ public class FareCalculatorService {
 
     /**
      * Used to calculate without reduction.
+     *
      * @param ticket
      */
     public void calculateFare(Ticket ticket) {
